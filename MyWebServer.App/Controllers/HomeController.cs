@@ -2,18 +2,19 @@
 {
     using MyWebServer.Controllers;
     using MyWebServer.Http;
+    using MyWebServer.Results;
 
     public class HomeController : Controller
     {
-        public HomeController(HttpRequest request) 
+        public HomeController(HttpRequest request)
             : base(request)
         {
         }
 
-        public HttpResponse Index() => Text("Hello from Ivo!");
+        public ActionResult Index() => Text("Hello from Ivo!");
 
-        public HttpResponse LocalRedirect() => Redirect("/Cats");
+        public ActionResult LocalRedirect() => Redirect("/Cats");
 
-        public HttpResponse ToSoftUni() => Redirect("https://softuni.bg");
+        public ActionResult ToSoftUni() => Redirect("https://softuni.bg");
     }
 }
