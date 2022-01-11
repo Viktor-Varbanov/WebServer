@@ -6,6 +6,7 @@
 
     public class HttpRequest
     {
+        private static Dictionary<string, HttpSession> Sessions = new();
         private const string NewLine = "\r\n";
 
         public HttpMethod Method { get; private set; }
@@ -19,6 +20,8 @@
         public IReadOnlyDictionary<string, HttpHeader> Headers { get; private set; }
 
         public IReadOnlyDictionary<string, HttpCookie> Cookies { get; set; }
+
+        public HttpSession Session { get; private set; }
 
         public string Body { get; private set; }
 
@@ -37,6 +40,8 @@
 
             var cookies = ParseCookies(headers);
 
+            var session = GetSession(cookies);
+
             var bodyLines = lines.Skip(headers.Count + 2).ToArray();
 
             var body = string.Join(NewLine, bodyLines);
@@ -51,8 +56,23 @@
                 Headers = headers,
                 Body = body,
                 Form = form,
-                Cookies = cookies
+                Cookies = cookies,
+                Session = session
             };
+        }
+
+        private static HttpSession GetSession(Dictionary<string, HttpCookie> cookies)
+        {
+            var sessionId = cookies.ContainsKey(HttpSession.SeesionCookieName)
+                ? cookies[HttpSession.SeesionCookieName].Value
+                : Guid.NewGuid().ToString();
+
+            if (!Sessions.ContainsKey(sessionId))
+            {
+                Sessions[sessionId] = new HttpSession(sessionId);
+            }
+
+            return Sessions[sessionId];
         }
 
         private static Dictionary<string, string> ParseForm(Dictionary<string, HttpHeader> headers, string body)

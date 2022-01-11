@@ -3,6 +3,7 @@
     using MyWebServer.Controllers;
     using MyWebServer.Http;
     using MyWebServer.Results;
+    using System;
 
     public class HomeController : Controller
     {
@@ -16,5 +17,7 @@
         public ActionResult LocalRedirect() => Redirect("/Cats");
 
         public ActionResult ToSoftUni() => Redirect("https://softuni.bg");
+
+        public HttpResponse Error() => throw new InvalidOperationException();
     }
 }

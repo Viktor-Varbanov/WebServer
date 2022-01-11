@@ -9,7 +9,7 @@
     {
         public static async Task Main()
             => await new HttpServer(routes => routes
-                .MapGet<HomeController>("/", c => c.Index())
+                .MapGet<HomeController>("/Error", c => c.Error())
                 .MapGet<HomeController>("/ToCats", c => c.LocalRedirect())
                 .MapGet<HomeController>("/Softuni", c => c.ToSoftUni())
                 .MapGet<AnimalsController>("/Cats", c => c.Cats())
@@ -18,7 +18,8 @@
                 .MapGet<AnimalsController>("/Turtles", c => c.Turtles())
                 .MapGet<CatsController>("/Cats/Create", c => c.Create())
             .MapPost<CatsController>("/Cats/Save", c => c.Save())
-            .MapGet<AccountContoller>("/Cookie", c => c.ActionWithCookies()))
+            .MapGet<AccountContoller>("/Cookie", c => c.ActionWithCookies())
+            .MapGet<AccountContoller>("/Session", c => c.ActionWithSession()))
             .Start();
     }
 }

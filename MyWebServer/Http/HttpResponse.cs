@@ -61,7 +61,13 @@
 
             return result.ToString();
         }
+        public static HttpResponse ForError(string message)
+        {
+            var response = new HttpResponse(HttpStatusCode.InternalServerError);
+            response.Content = message;
 
+            return response;
+        }
         protected void PrepareContent(string content, string contentType)
         {
             Guard.AgainstNull(content, nameof(content));
